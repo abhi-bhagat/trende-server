@@ -1,5 +1,8 @@
+require('dotenv').config();
+
+
 module.exports = {
-	development: {
+	
 		client: "mysql",
 		connection: {
 			host: "127.0.0.1",
@@ -8,5 +11,5 @@ module.exports = {
 			database: "trende",
 			charset: "utf8",
 		},
-	},
+	
 };

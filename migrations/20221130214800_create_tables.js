@@ -11,7 +11,7 @@ exports.up = function (knex) {
 				table.integer("product_qty").unsigned().notNullable().defaultTo(0);
 				table.float("product_price").unsigned().notNullable();
 				table.integer("product_stars").unsigned();
-				table.string("product_reviews", 255);
+				table.json("product_reviews");
 			})
 			//customers table
 			.createTable("customers", (table) => {
@@ -22,7 +22,7 @@ exports.up = function (knex) {
 				table.string("customer_lname", 255).notNullable();
 				table.text("customer_billing_address", "longText").notNullable();
 				table.string("customer_shipping_address", 1000).unique().notNullable();
-				table.integer("customer_phone").notNullable().unique().unsigned();
+				table.string("customer_phone").notNullable();
 			})
 
 			//orders table
