@@ -35,20 +35,8 @@ exports.up = function (knex) {
 					.onUpdate("cascade")
 					.onDelete("cascade");
 				table.float("order_amount").notNullable();
-				table
-					.string("customer_shipping_address", 1000)
-					.notNullable()
-					.unique()
-					.references("customer_shipping_address")
-					.inTable("customers")
-					.onUpdate("cascade")
-					.onDelete("cascade");
-				table
-					.string("customer_email", 255)
-					.references("customer_email")
-					.inTable("customers")
-					.onUpdate("cascade")
-					.onDelete("cascade");
+				table.string("customer_shipping_address", 1000).notNullable();
+
 				table.timestamp("order_time").defaultTo(knex.fn.now());
 				table.string("order_status", 255).notNullable();
 			})
