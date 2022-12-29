@@ -1,18 +1,25 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const { CLIENT_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const { SESSION_SECRET,CLIENT_URL, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = process.env;
+const session = require("express-session");
 
-exports.authentication = (req, res) => {
-	passport.use(
-		new GoogleStrategy(
-			{
-				clientID: GOOGLE_CLIENT_ID,
-				clientSecret: GOOGLE_CLIENT_SECRET,
-				callbackURL: "http://localhost:8080/auth/google/callback",
-			},
-			(accessToken, refreshToken, profile, cb) => {
-				//passport callback function
-			}
-		)
-	);
+const knex = require("knex")(require("../knexfile"));
+const { auth, requiresAuth } = require("express-openid-connect");
+
+exports.authentication = (req,res) => {
+	console.log("me authen");
+
+
+	res.send(
+		req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out'
+	  )
+
+
+
+
+};
+
+//callback
+exports.callback = (_req, res) => {
+	// res.redirect("http://localhost:3000/shop");
 };
