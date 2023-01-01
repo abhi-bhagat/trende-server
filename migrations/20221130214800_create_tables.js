@@ -42,7 +42,7 @@ exports.up = function (knex) {
 			})
 			// order details table
 			.createTable("order-details", (table) => {
-				table.string("order-,255details_id", 255).primary().notNullable();
+				table.string("order-details_id", 255).primary().notNullable();
 				table
 					.string("order_id", 255)
 					.references("order_id")

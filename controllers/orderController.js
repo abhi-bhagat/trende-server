@@ -84,7 +84,7 @@ exports.updateOrder = (req, res) => {
 
 			return knex("orders").insert({
 				order_id: uuidv4(),
-				customer_id: "1cc99d53-4c33-4aec-9618-40439954e569",
+				customer_id: "0b17c1c6-3196-4c04-b816-6414d4929cde",
 				order_amount: total,
 				customer_shipping_address: req.body[0].customer_address,
 				order_status: "pending",
