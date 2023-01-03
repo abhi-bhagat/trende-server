@@ -1,4 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
+const { v4: uuidv4 } = require("uuid");
+
 //all products
 exports.getProducts = (_req, res) => {
 	knex("products")
@@ -23,8 +25,6 @@ exports.monthlySales = (req, res) => {
 	knex("orders")
 		.select()
 		.then((data) => {
-			console.log(data);
-
 			const order_data = data;
 			const sales_data = [
 				{ Month: "Jan", Sales: 0 },
@@ -48,17 +48,55 @@ exports.monthlySales = (req, res) => {
 
 				if (found) {
 					const foundElement = sales_data.find((e) => e.Month === i[1]);
-					console.log("found", typeof foundElement.Sales);
-					console.log(`order amount`, typeof data.order_amount);
+
 					const mySales = foundElement.Sales + data.order_amount;
 					const myshortSales = mySales.toFixed(2);
-					console.log(`i am sales`, myshortSales);
-					foundElement.Sales = Number(myshortSales);
 
+					foundElement.Sales = Number(myshortSales);
 				}
 			});
-			console.log(sales_data);
+
 			res.status(200).json(sales_data);
 		})
 		.catch((e) => res.status(400).send(`Error fetching orders`));
+};
+
+//add products
+
+exports.addProduct = (req, res) => {
+	if (
+		!req.body.name ||
+		!req.body.category ||
+		!req.body.image ||
+		!req.body.qty ||
+		!req.body.price ||
+		!req.body.color ||
+		!req.body.desc ||
+		!req.body.company
+	) {
+		res.status(400).send(`Error uploading product`);
+	}
+
+	const prodID = uuidv4();
+	const owner_id = "deae6604-abe4-4969-87dd-3e0d66480713";
+
+	knex("products")
+		.insert({
+			product_id: prodID,
+			product_name: req.body.name,
+			product_description: req.body.desc,
+			product_category: req.body.category,
+			product_color: req.body.color,
+			product_qty: req.body.qty,
+			product_price: req.body.price,
+			product_stars: 4,
+			product_reviews: {},
+			product_company: req.body.company,
+			product_image: req.body.image,
+			owner_id: owner_id,
+		})
+		.then(() => {
+			res.status(200).send(`Inserted successfully`);
+		})
+		.catch((e) => res.status(500).send(`Error adding product`));
 };
