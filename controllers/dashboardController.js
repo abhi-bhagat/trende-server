@@ -61,6 +61,14 @@ exports.monthlySales = (req, res) => {
 		.catch((e) => res.status(400).send(`Error fetching orders`));
 };
 
+//
+
+exports.transactions = (req, res) => {
+	knex("orders")
+		.select()
+		.then((data) => res.status(200).json(data));
+};
+
 //add products
 
 exports.addProduct = (req, res) => {
