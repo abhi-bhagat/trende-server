@@ -100,3 +100,20 @@ exports.addProduct = (req, res) => {
 		})
 		.catch((e) => res.status(500).send(`Error adding product`));
 };
+
+exports.deleteProduct = (req, res) => {
+	console.log(`req`, req.body.prodId);
+	knex("products")
+		.where("product_id", req.body.prodId)
+		.del()
+		.then(() =>
+			res
+				.status(200)
+				.send(
+					`product with id of -> ${req.body.prodId} <- was successfully deleted`
+				)
+		)
+		.catch((e) => {
+			res.send(`Error deleting product ${e}  -> id was ${req.body.prodId}`);
+		});
+};
