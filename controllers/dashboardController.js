@@ -1,6 +1,6 @@
 const knex = require("knex")(require("../knexfile"));
 const { v4: uuidv4 } = require("uuid");
-
+const { authenticateToken } = require("../index");
 //all products
 exports.getProducts = (_req, res) => {
 	knex("products")
@@ -61,7 +61,7 @@ exports.monthlySales = (req, res) => {
 		.catch((e) => res.status(400).send(`Error fetching orders`));
 };
 
-//
+//transactions
 
 exports.transactions = (req, res) => {
 	knex("orders")
@@ -108,7 +108,7 @@ exports.addProduct = (req, res) => {
 		})
 		.catch((e) => res.status(500).send(`Error adding product`));
 };
-
+//delete prod
 exports.deleteProduct = (req, res) => {
 	console.log(`req`, req.body.prodId);
 	knex("products")

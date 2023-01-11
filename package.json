@@ -13,6 +13,7 @@
 	"author": "Abhishek Bhagat",
 	"license": "ISC",
 	"dependencies": {
+		"bcrypt": "^5.1.0",
 		"casual": "^1.6.2",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
@@ -20,6 +21,7 @@
 		"express-openid-connect": "^2.11.0",
 		"express-session": "^1.17.3",
 		"helmet": "^6.0.1",
+		"jsonwebtoken": "^9.0.0",
 		"knex": "^2.3.0",
 		"mysql": "^2.18.1",
 		"passport": "^0.6.0",

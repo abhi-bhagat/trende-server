@@ -11,23 +11,6 @@ const passport = require("passport");
 const { auth, requiresAuth } = require("express-openid-connect");
 
 const PORT = process.env.PORT || 8080;
-const {
-	CLIENT_URL,
-	STRIPE_SECRET_KEY,
-	GOOGLE_CLIENT_ID,
-	GOOGLE_CLIENT_SECRET,
-} = process.env;
-
-const config = {
-	authRequired: false,
-	auth0Logout: true,
-	baseURL: "http://localhost:8080",
-	clientID: "qrEBJWChon1Ya66zaEZdpIlv7cX4qY64",
-	issuerBaseURL: "https://dev-57nak77h2lxvpqol.us.auth0.com",
-	secret: SESSION_SECRET,
-};
-
-require("dotenv").config();
 
 app.use(express.json());
 
@@ -48,22 +31,42 @@ app.use(
 		saveUninitialized: true,
 	})
 );
-app.use(auth(config));
+// app.use(auth(config));
 
 //passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
+
+//authenticate
+exports.authenticateToken = (req, res, next) => {
+	const authHeader = req.headers["authorization"];
+	const token = authHeader && authHeader.split(" ")[1];
+	if (token === null) {
+		res.status(401);
+	}
+
+	jwt.verify(token, process.env.SESSION_SECRET, (err, user_name) => {
+		if (err) {
+			res.status(403);
+		}
+		req.user = user_name;
+		next();
+	});
+};
 
 //routes
 const productsRoutes = require("./routes/productsRoutes.js");
 const orderRoutes = require("./routes/orderRoutes");
 const authentication = require("./routes/authenticationRoutes");
 const dashboardroutes = require("./routes/dashboardRoutes");
+const loginRoutes = require("./routes/loginRoute");
+// const { JsonWebTokenError } = require("jsonwebtoken");
 
 app.use("/shop", productsRoutes);
 app.use("/order", orderRoutes);
 app.use("/auth", authentication);
 app.use("/dashboard", dashboardroutes);
+app.use("/login", loginRoutes);
 
 app.listen(PORT, () => {
 	console.log(`🚀 Server running at http://localhost:${PORT}`);

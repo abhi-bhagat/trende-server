@@ -1,5 +1,5 @@
 const router = require("express").Router();
-
+const { authenticateToken } = require("../index");
 const {
 	getProducts,
 	lowProducts,
@@ -9,7 +9,7 @@ const {
 	transactions,
 } = require("../controllers/dashboardController");
 
-router.route("/").get(getProducts);
+router.route("/", authenticateToken).get(getProducts);
 router.route("/lowProducts").get(lowProducts);
 router.route("/monthlySales").get(monthlySales);
 router.route("/addProduct").post(addProduct);
